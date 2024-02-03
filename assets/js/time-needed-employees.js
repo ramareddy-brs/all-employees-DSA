@@ -1,37 +1,34 @@
-function numOfMinutes(n, headID, manager, informTime) {
-    const graph = new Map();
+function calculateMinutes() {
+    const n = parseInt(document.getElementById('numberOfEmployees').value, 10);
+    const headID = parseInt(document.getElementById('headID').value, 10);
+    const managerInput = document.getElementById('manager').value.split(',').map(Number);
+    const informTimeInput = document.getElementById('informTime').value.split(',').map(Number);
 
-    // Populate the adjacency list
-    for (let i = 0; i < n; i++) {
-        if (!graph.has(manager[i])) {
-            graph.set(manager[i], []);
-        }
-        graph.get(manager[i]).push(i);
-    }
+    const minutes = informAllEmployees(n, headID, managerInput, informTimeInput);
 
-    // Helper function to perform DFS
-    function dfs(node) {
-        if (!graph.has(node)) {
-            return 0;
-        }
-
-        let maxTime = 0;
-        for (const subordinate of graph.get(node)) {
-            maxTime = Math.max(maxTime, dfs(subordinate));
-        }
-
-        return maxTime + informTime[node];
-    }
-
-    // Start DFS from the head of the company
-    return dfs(headID);
+    document.getElementById('output').innerText = `Minutes needed to inform all employees: ${minutes}`;
 }
 
+function informAllEmployees(n, headID, manager, informTime) {
+    const adjList = Array.from({ length: n }, () => []);
+    for (let i = 0; i < n; i++) {
+        if (manager[i] !== -1) {
+            adjList[manager[i]].push(i);
+        }
+    }
 
-const n = 1;
-const headID = 0;
-const manager = [-1];
-const informTime = [0];
+    return inform(headID, adjList, informTime);
+}
 
-const result = numOfMinutes(n, headID, manager, informTime);
-console.log(result); 
+function inform(employee, adjList, informTime) {
+    if (adjList[employee].length === 0) {
+        return 0;
+    }
+
+    let maxSubordinateTime = 0;
+    for (const subordinate of adjList[employee]) {
+        maxSubordinateTime = Math.max(maxSubordinateTime, inform(subordinate, adjList, informTime));
+    }
+
+    return maxSubordinateTime + informTime[employee];
+}

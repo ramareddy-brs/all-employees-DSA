@@ -26,6 +26,27 @@
       <p class="text-start">
         This code defines a numOfMinutes function that takes the number of employees n, the head of the company headID, the manager array manager, and the informTime array informTime. It uses a depth-first search to traverse the tree and calculates the time needed to inform all employees
       </p>
+
+      
+        <label for="numberOfEmployees">Number of Employees:</label>
+        <input type="number" id="numberOfEmployees" min="1" value="1">
+        <br>
+
+        <label for="headID">Head of the Company ID:</label>
+        <input type="number" id="headID" min="0" value="0">
+        <br>
+
+        <label for="manager">Manager Array (comma-separated):</label>
+        <input type="text" id="manager" placeholder="e.g., -1" value="-1">
+        <br>
+
+        <label for="informTime">Inform Time Array (comma-separated):</label>
+        <input type="text" id="informTime" placeholder="e.g., 0" value="0">
+        <br>
+
+        <button onclick="calculateMinutes()">Calculate Minutes</button>
+
+        <div id="output"></div>
     </main>
 
     <footer class="footer footer-dark">
